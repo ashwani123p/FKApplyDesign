@@ -2,10 +2,15 @@
 Project Description :-  
 Objective : Design and simulate grid based game described in the following requirements.
 	Design and Simulate Tic-Tac-Toe Game with Following Requirements
+	
 		1. Tic-Tac-Toe consists of 3x3 Square Cells
+		
 		2. Game Between Two Humans
+		
 		3. Game Between Human and Machine
+		
 		4. Winning Criteria - 3 Cells in Row/Column/Diagonal are in Same State.
+		
 		5. Announce Winning Player
 
 Solution :
