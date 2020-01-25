@@ -98,12 +98,12 @@ public class Game{
 			if(c%3==0&&c!=0)
 				System.out.println();
 			System.out.print(t.getValue());
-			System.out.print(' ');
+			System.out.print(" | " );
 			c++;
 		}
 		System.out.println();
 	}
-	public static void play(Game g,Scanner sc){
+	public static void play1(Game g,Scanner sc){
 		int flag=0,r,c;
 		while(true){
 			if(flag==0){
@@ -135,6 +135,40 @@ public class Game{
 		}
 		g.printState();
 	}
+	public static void play2(Game g,Scanner sc){
+		System.out.println("player1= human and player2 = machine");
+		int flag=0,r,c;
+		while(true){
+			if(flag==0){
+				System.out.println("Human turn : Enter the cordinates of cell [row,column] ");
+				r=sc.nextInt();
+				c=sc.nextInt();
+				if(g.available(g,r,c)==0){
+					System.out.println(" Enter valid cordinates !! This cordinate is not available");
+					continue;
+				}
+				flag=1;
+				g.Seq.set(3*r+c,g.player1);
+			}
+			else{
+				System.out.println("Machine Turn !! ");
+				int i;
+				for(i=0;i<9;i++){
+					if(g.Seq.get(i).getValue()=='_')
+						break;
+				}
+				r=i/3;
+				c=i%3;
+				flag=0;
+				g.Seq.set(3*r+c,g.player2);
+			}
+			if(g.check(g)==1){
+				break;
+			}else
+			g.printState();
+		}
+		g.printState();
+	}
 	public static void main(String[] args){
 		Scanner scan = new Scanner(System.in);
 		int x;
@@ -154,7 +188,10 @@ public class Game{
 				for(int i=0;i<9;i++){
 					g.Seq.add(g.def);
 				}
-				Game.play(g,scan);
+				if(x==1)
+				Game.play1(g,scan);
+				else 
+				Game.play2(g,scan);
 			}else if(x==3){
 				System.out.println(" Quiting the game, Bye Bye !!");
 				break;
