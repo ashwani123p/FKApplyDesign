@@ -9,7 +9,9 @@ second this command =>  java -cp ClassFiles/ learnJava.Game
 
 Rules to play this game :
 			Enter 1. to play human vs human TicTacToe
+			
 			Enter 2. to play human vs bot TicTacToe
+			
 			Enter 3. to quit this game 
       
       
