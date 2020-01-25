@@ -1,6 +1,15 @@
 # FKApplyDesign
+Project Description :-  
+Objective : Design and simulate grid based game described in the following requirements.
+	Design and Simulate Tic-Tac-Toe Game with Following Requirements
+## 1. Tic-Tac-Toe consists of 3x3 Square Cells
+2. Game Between Two Humans
+3. Game Between Human and Machine
+4. Winning Criteria - 3 Cells in Row/Column/Diagonal are in Same State.
+5. Announce Winning Player
+Delegation 
 feature branch contains code till human vs human TicTacToe
-feature1 branch contains full code working !!
+feature2 branch contains full code working !!
 devBranch also contains full code working with all the requirements
 
 on terminal  type 
@@ -15,4 +24,4 @@ Rules to play this game :
 			Enter 3. to quit this game 
       
       
-      coordinates should be between 0 to 2
+      coordinates should be between 0 to 2 as the matrix is of 3*3
