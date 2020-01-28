@@ -24,10 +24,12 @@ class player{
 }
 abstract class boardfeature{
 	public int b;
+	public Arr
 	abstract int check(Game g);
 	abstract void printState(Game g);
 	abstract int available(Game g,int r,int c);
 	abstract void printleaderboard(Game g);
+	//abstract void saveState(Game g);
 }
 
 public class Game extends boardfeature {
@@ -35,6 +37,7 @@ public class Game extends boardfeature {
 	player p1,p2;
 	public ArrayList<TicTacToe> Seq= new ArrayList<TicTacToe>();
 	public ArrayList<String> results=new ArrayList<String>();
+	public static ArrayList<Game> States=new ArrayList<Game>;
 	public int check(Game g){
 		int pl1=0,pl2=0;
 		for(int i=0;i<g.b;i++){
@@ -136,6 +139,9 @@ public class Game extends boardfeature {
 		}
 		System.out.println();
 	}
+	public void saveState(Game g){
+		Game.add(g);
+	}
 	public void printleaderboard(Game g){
 		int c=1;
 		for(String t: g.results){
@@ -165,8 +171,10 @@ public class Game extends boardfeature {
 				if(y=='y'){
 					g.Seq.set(g.b*r+c,g.def);
 					continue;
-				}else 
+				}else{ 
+				saveState(g);
 				flag=1;
+				}
 			}
 			else{
 				System.out.println("Player2 turn : Enter the cordinates of cell [row,column] ");
@@ -184,8 +192,10 @@ public class Game extends boardfeature {
 				if(y=='y'){
 					g.Seq.set(g.b*r+c,g.def);
 					continue;
-				}else 
+				}else{ 
+				saveState(g);
 				flag=0;
+				}
 			}
 			if(g.check(g)==1){
 				break;
@@ -206,20 +216,30 @@ public class Game extends boardfeature {
 					System.out.println(" Enter valid cordinates !! This cordinate is not available");
 					continue;
 				}
-				flag=1;
 				g.Seq.set(3*r+c,g.player1);
+				System.out.println("Current State is this :");
+				g.printState(g);
+				System.out.println("Do you want to undo ? if yes type 'y' else 'n' ");
+				char y = sc.next().charAt(0); 
+
+				if(y=='y'){
+					g.Seq.set(g.b*r+c,g.def);
+					continue;
+				}else{ 
+				saveState(g);
+				flag=1;
+				}
 			}
 			else{
 				System.out.println("Machine Turn !! ");
 				int i;
-				for(i=0;i<9;i++){
+				for(i=0;i<g.b*g.b;i++){
 					if(g.Seq.get(i).getValue()=='_')
 						break;
 				}
-				r=i/3;
-				c=i%3;
 				flag=0;
-				g.Seq.set(3*r+c,g.player2);
+				saveState(g);
+				g.Seq.set(i,g.player2);
 			}
 			if(g.check(g)==1){
 				break;
