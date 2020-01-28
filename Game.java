@@ -129,8 +129,17 @@ public class Game extends boardfeature {
 					System.out.println(" Enter valid cordinates !!");
 					continue;
 				}
-				flag=1;
 				g.Seq.set(g.b*r+c,g.player1);
+				System.out.println("Current State is this :");
+				g.printState(g);
+				System.out.println("Do you want to undo ? if yes type 'y' else 'n' ");
+				char y = sc.next().charAt(0); 
+
+				if(y=='y'){
+					g.Seq.set(g.b*r+c,g.def);
+					continue;
+				}else 
+				flag=1;
 			}
 			else{
 				System.out.println("Player2 turn : Enter the cordinates of cell [row,column] ");
@@ -140,8 +149,16 @@ public class Game extends boardfeature {
 					System.out.println(" Enter valid cordinates !!");
 					continue;
 				}
-				flag=0;
 				g.Seq.set(g.b*r+c,g.player2);
+				System.out.println("Current State is this :");
+				g.printState(g);
+				System.out.println("Do you want to undo ? if yes type 'y' else 'n' ");
+				char y = sc.next().charAt(0); 
+				if(y=='y'){
+					g.Seq.set(g.b*r+c,g.def);
+					continue;
+				}else 
+				flag=0;
 			}
 			if(g.check(g)==1){
 				break;
