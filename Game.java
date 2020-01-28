@@ -24,7 +24,6 @@ class player{
 }
 abstract class boardfeature{
 	public int b;
-	public Arr
 	abstract int check(Game g);
 	abstract void printState(Game g);
 	abstract int available(Game g,int r,int c);
@@ -37,7 +36,7 @@ public class Game extends boardfeature {
 	player p1,p2;
 	public ArrayList<TicTacToe> Seq= new ArrayList<TicTacToe>();
 	public ArrayList<String> results=new ArrayList<String>();
-	public static ArrayList<Game> States=new ArrayList<Game>;
+	public static ArrayList<Game> States=new ArrayList<Game>();
 	public int check(Game g){
 		int pl1=0,pl2=0;
 		for(int i=0;i<g.b;i++){
@@ -139,8 +138,8 @@ public class Game extends boardfeature {
 		}
 		System.out.println();
 	}
-	public void saveState(Game g){
-		Game.add(g);
+	public static void saveState(Game g){
+		Game.States.add(g);
 	}
 	public void printleaderboard(Game g){
 		int c=1;
@@ -172,7 +171,7 @@ public class Game extends boardfeature {
 					g.Seq.set(g.b*r+c,g.def);
 					continue;
 				}else{ 
-				saveState(g);
+				Game.saveState(g);
 				flag=1;
 				}
 			}
