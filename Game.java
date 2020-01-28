@@ -118,6 +118,65 @@ public class Game extends boardfeature {
 		}
 		return 0;
 	}
+
+	public int checkenhance(Game g){
+		char[][] board=new char[g.b][g.b];
+		int n=g.b,r,c,f=0;
+		for(int i=0;i<g.b*g.b;i++){
+			r=i/g.b;
+			c=i%g.b;
+			board[r][c]=g.Seq.get(i).getValue();
+			if(board[r][c]=='_')
+				f=1;
+		}
+		if(f==0){
+			System.out.println("------------Game DRAW !!------------");
+			g.results.add("Draw!!");
+			return 1;
+		}
+		while(n>1){
+			for(int i=0;i<n/3;i++){
+				for(int j=0;j<n/3;j++){
+					int i1=3*i;
+					int j1=3*j;
+					if((board[i1][j1]=='X'&&board[i1][j1+1]=='X'&&board[i1][j1+2]=='X')||
+					   (board[i1+1][j1]=='X'&&board[i1+1][j1+1]=='X'&&board[i1+1][j1+2]=='X')||
+					   (board[i1+2][j1]=='X'&&board[i1+2][j1+1]=='X'&&board[i1+2][j1+2]=='X')||
+					   (board[i1][j1]=='X'&&board[i1+1][j1]=='X'&&board[i1+2][j1]=='X')||
+					   (board[i1][j1+1]=='X'&&board[i1+1][j1+1]=='X'&&board[i1+2][j1+1]=='X')||
+					   (board[i1][j1+2]=='X'&&board[i1+1][j1+2]=='X'&&board[i1+2][j1+2]=='X')||
+					   (board[i1][j1]=='X'&&board[i1+1][j1+1]=='X'&&board[i1+2][j1+2]=='X')||
+					   (board[i1+2][j1]=='X'&&board[i1+1][j1+1]=='X'&&board[i1][j1+2]=='X'))
+						board[i][j]='X';
+					else if((board[i1][j1]=='O'&&board[i1][j1+1]=='O'&&board[i1][j1+2]=='O')||
+					   (board[i1+1][j1]=='O'&&board[i1+1][j1+1]=='O'&&board[i1+1][j1+2]=='O')||
+					   (board[i1+2][j1]=='O'&&board[i1+2][j1+1]=='O'&&board[i1+2][j1+2]=='O')||
+					   (board[i1][j1]=='O'&&board[i1+1][j1]=='O'&&board[i1+2][j1]=='O')||
+					   (board[i1][j1+1]=='O'&&board[i1+1][j1+1]=='O'&&board[i1+2][j1+1]=='O')||
+					   (board[i1][j1+2]=='O'&&board[i1+1][j1+2]=='O'&&board[i1+2][j1+2]=='O')||
+					   (board[i1][j1]=='O'&&board[i1+1][j1+1]=='O'&&board[i1+2][j1+2]=='O')||
+					   (board[i1+2][j1]=='O'&&board[i1+1][j1+1]=='O'&&board[i1][j1+2]=='O'))
+						board[i][j]='O';
+					else
+						board[i][j]='_';
+				}
+			}
+			n=n/3;
+		}
+		if(board[0][0]=='X'){
+			System.out.println("--------"+g.p1.getName()+"  Wins "+"--------");
+			g.results.add(g.p1.getName());
+			return 1;
+		}
+		else if(board[0][0]=='O'){
+			System.out.println("--------"+g.p2.getName()+"  Wins "+"--------");
+			g.results.add(g.p2.getName());
+			return 1;
+		}else{
+			return 0;
+		}
+
+	}
 	public int available(Game g,int r,int c){
 		if(r<0||r>=g.b||c<0||c>=g.b){
 			return 0;
@@ -150,7 +209,7 @@ public class Game extends boardfeature {
 		if(c==1)
 			System.out.println("leaderboard empty !!");
 	}
-	public static void play1(Game g,Scanner sc){
+	public static void play1(Game g,Scanner sc,int enhanc){
 		int flag=0,r,c;
 		while(true){
 			if(flag==0){
@@ -196,7 +255,10 @@ public class Game extends boardfeature {
 				flag=0;
 				}
 			}
-			if(g.check(g)==1){
+			if(enhanc==1){
+				if(g.checkenhance(g)==1)
+					break;
+			}else if(g.check(g)==1){
 				break;
 			}else
 			g.printState(g);
@@ -266,6 +328,9 @@ public class Game extends boardfeature {
 				g.player1.setValue('X');
 				g.player2.setValue('O');
 				g.def=new TicTacToe();
+				int enhanc=0;
+				System.out.println("Wanna play enhance game enter 1 in power of 3 if not then enter 0");
+				enhanc=scan.nextInt();
 				System.out.println("Enter the dimension of board in integer N");
 				g.b=scan.nextInt();
 				for(int i=0;i<g.b*g.b;i++){
@@ -279,7 +344,7 @@ public class Game extends boardfeature {
 				System.out.println(" Name of player2");
 				s=scan.next();
 				g.p2.setName(s);
-				Game.play1(g,scan);
+				Game.play1(g,scan,enhanc);
 				}
 				else {
 					g.p2.setName("Machine");
