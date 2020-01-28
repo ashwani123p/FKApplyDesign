@@ -1,6 +1,5 @@
 // javac Game.java -d Classfiles
 // java -cp ClassFiles/ learnJava.Game
-
 package learnJava;
 import java.util.*;
 import java.util.Scanner;
@@ -14,15 +13,21 @@ class TicTacToe{
 		return value;
 	}
 }
-public class Game{
+abstract class boardfeature{
+	public int b;
+	abstract int check(Game g);
+	abstract void printState(Game g);
+	abstract int available(Game g,int r,int c);
+}
+public class Game extends boardfeature {
 	TicTacToe player1,player2,def;
 	public ArrayList<TicTacToe> Seq= new ArrayList<TicTacToe>();
 
 	public int check(Game g){
-		for(int i=0;i<3;i++){
+		for(int i=0;i<g.b;i++){
 			int f=0;
-			for(int j=0;j<3;j++){
-				if(g.Seq.get(3*i+j).getValue()!='X')
+			for(int j=0;j<g.b;j++){
+				if(g.Seq.get(g.b*i+j).getValue()!='X')
 					f=1;
 			}
 			if(f==0){
@@ -30,10 +35,10 @@ public class Game{
 				return 1;
 			}
 		}
-		for(int i=0;i<3;i++){
+		for(int i=0;i<g.b;i++){
 			int f=0;
-			for(int j=0;j<3;j++){
-				if(g.Seq.get(3*j+i).getValue()!='X')
+			for(int j=0;j<g.b;j++){
+				if(g.Seq.get(g.b*j+i).getValue()!='X')
 					f=1;
 			}
 			if(f==0){
@@ -41,10 +46,10 @@ public class Game{
 				return 1;
 			}
 		}
-		for(int i=0;i<3;i++){
+		for(int i=0;i<g.b;i++){
 			int f=0;
-			for(int j=0;j<3;j++){
-				if(g.Seq.get(3*i+j).getValue()!='O')
+			for(int j=0;j<g.b;j++){
+				if(g.Seq.get(g.b*i+j).getValue()!='O')
 					f=1;
 			}
 			if(f==0){
@@ -52,10 +57,10 @@ public class Game{
 				return 1;
 			}
 		}
-		for(int i=0;i<3;i++){
+		for(int i=0;i<g.b;i++){
 			int f=0;
-			for(int j=0;j<3;j++){
-				if(g.Seq.get(3*j+i).getValue()!='O')
+			for(int j=0;j<g.b;j++){
+				if(g.Seq.get(g.b*j+i).getValue()!='O')
 					f=1;
 			}
 			if(f==0){
@@ -63,18 +68,28 @@ public class Game{
 				return 1;
 			}
 		}
-		if(g.Seq.get(4).getValue()=='X'&&((g.Seq.get(0).getValue()==g.Seq.get(4).getValue()&&g.Seq.get(8).getValue()==g.Seq.get(0).getValue())||
-			(g.Seq.get(2).getValue()==g.Seq.get(4).getValue()&&g.Seq.get(6).getValue()==g.Seq.get(4).getValue()))){
+		int f=0;
+		for (int i=0;i<g.b;i++){
+			if(g.Seq.get(g.b*i+i).getValue()!='X')
+				f=1;
+		}
+		if(f==0){
 			System.out.println("------------Player1 wins !!------------");
-				return 1;}
-		if(g.Seq.get(4).getValue()=='O'&&((g.Seq.get(0).getValue()==g.Seq.get(4).getValue()&&g.Seq.get(8).getValue()==g.Seq.get(0).getValue())||
-			(g.Seq.get(2).getValue()==g.Seq.get(4).getValue()&&g.Seq.get(6).getValue()==g.Seq.get(4).getValue()))){
+			return 1;
+		}	
+		f=0;
+		for (int i=0;i<g.b;i++){
+			if(g.Seq.get(g.b*i+i).getValue()!='O')
+				f=1;
+		}
+		if(f==0){
 			System.out.println("------------Player2 wins !!------------");
-				return 1;}
-		int f=1;
-		for(int i=0;i<3;i++){
-			for(int j=0;j<3;j++)
-				if(g.Seq.get(3*i+j).getValue()=='_')
+			return 1;
+		}		
+		f=1;
+		for(int i=0;i<g.b;i++){
+			for(int j=0;j<g.b;j++)
+				if(g.Seq.get(g.b*i+j).getValue()=='_')
 					f=0;
 		}
 		if(f==1){
@@ -84,18 +99,18 @@ public class Game{
 		return 0;
 	}
 	public int available(Game g,int r,int c){
-		if(r<0||r>2||c<0||c>2){
+		if(r<0||r>=g.b||c<0||c>=g.b){
 			return 0;
 		}
-		int index=r*3+c;
+		int index=r*(g.b)+c;
 		if(g.Seq.get(index).getValue()=='_')
 			return 1;
 		return 0;
 	}
-	public void printState(){
+	public void printState(Game g){
 		int c=0;
 		for(TicTacToe t : Seq){
-			if(c%3==0&&c!=0)
+			if(c%g.b==0&&c!=0)
 				System.out.println();
 			System.out.print(t.getValue());
 			System.out.print(" | " );
@@ -111,11 +126,11 @@ public class Game{
 				r=sc.nextInt();
 				c=sc.nextInt();
 				if(g.available(g,r,c)==0){
-					System.out.println(" Enter valid cordinates !! This cordinate is not available");
+					System.out.println(" Enter valid cordinates !!");
 					continue;
 				}
 				flag=1;
-				g.Seq.set(3*r+c,g.player1);
+				g.Seq.set(g.b*r+c,g.player1);
 			}
 			else{
 				System.out.println("Player2 turn : Enter the cordinates of cell [row,column] ");
@@ -126,14 +141,14 @@ public class Game{
 					continue;
 				}
 				flag=0;
-				g.Seq.set(3*r+c,g.player2);
+				g.Seq.set(g.b*r+c,g.player2);
 			}
 			if(g.check(g)==1){
 				break;
 			}else
-			g.printState();
+			g.printState(g);
 		}
-		g.printState();
+		g.printState(g);
 	}
 	public static void play2(Game g,Scanner sc){
 		System.out.println("player1= human and player2 = machine");
@@ -165,9 +180,9 @@ public class Game{
 			if(g.check(g)==1){
 				break;
 			}else
-			g.printState();
+			g.printState(g);
 		}
-		g.printState();
+		g.printState(g);
 	}
 	public static void main(String[] args){
 		Scanner scan = new Scanner(System.in);
@@ -185,7 +200,9 @@ public class Game{
 				g.player1.setValue('X');
 				g.player2.setValue('O');
 				g.def=new TicTacToe();
-				for(int i=0;i<9;i++){
+				System.out.println("Enter the dimension of board in integer N");
+				g.b=scan.nextInt();
+				for(int i=0;i<g.b*g.b;i++){
 					g.Seq.add(g.def);
 				}
 				if(x==1)
@@ -201,3 +218,4 @@ public class Game{
 		}
 	}
 }
+
