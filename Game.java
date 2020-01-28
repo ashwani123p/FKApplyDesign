@@ -13,17 +13,30 @@ class TicTacToe{
 		return value;
 	}
 }
+class player{
+	private String name=" _";
+	public void setName(String a){
+		name=a;
+	}
+	public String getName(){
+		return name;
+	}
+}
 abstract class boardfeature{
 	public int b;
 	abstract int check(Game g);
 	abstract void printState(Game g);
 	abstract int available(Game g,int r,int c);
+	abstract void printleaderboard(Game g);
 }
+
 public class Game extends boardfeature {
 	TicTacToe player1,player2,def;
+	player p1,p2;
 	public ArrayList<TicTacToe> Seq= new ArrayList<TicTacToe>();
-
+	public ArrayList<String> results=new ArrayList<String>();
 	public int check(Game g){
+		int pl1=0,pl2=0;
 		for(int i=0;i<g.b;i++){
 			int f=0;
 			for(int j=0;j<g.b;j++){
@@ -31,8 +44,7 @@ public class Game extends boardfeature {
 					f=1;
 			}
 			if(f==0){
-				System.out.println("-------------Player1 wins !!------------");
-				return 1;
+				pl1=1;
 			}
 		}
 		for(int i=0;i<g.b;i++){
@@ -42,8 +54,7 @@ public class Game extends boardfeature {
 					f=1;
 			}
 			if(f==0){
-				System.out.println("------------Player1 wins !!------------");
-				return 1;
+				pl1=1;
 			}
 		}
 		for(int i=0;i<g.b;i++){
@@ -53,8 +64,7 @@ public class Game extends boardfeature {
 					f=1;
 			}
 			if(f==0){
-				System.out.println("------------Player2 wins !!------------");
-				return 1;
+				pl2=1;
 			}
 		}
 		for(int i=0;i<g.b;i++){
@@ -64,8 +74,7 @@ public class Game extends boardfeature {
 					f=1;
 			}
 			if(f==0){
-				System.out.println("------------Player2 wins !!------------");
-				return 1;
+				pl2=1;
 			}
 		}
 		int f=0;
@@ -74,8 +83,7 @@ public class Game extends boardfeature {
 				f=1;
 		}
 		if(f==0){
-			System.out.println("------------Player1 wins !!------------");
-			return 1;
+			pl1=1;
 		}	
 		f=0;
 		for (int i=0;i<g.b;i++){
@@ -83,8 +91,7 @@ public class Game extends boardfeature {
 				f=1;
 		}
 		if(f==0){
-			System.out.println("------------Player2 wins !!------------");
-			return 1;
+			pl2=1;
 		}		
 		f=1;
 		for(int i=0;i<g.b;i++){
@@ -92,8 +99,19 @@ public class Game extends boardfeature {
 				if(g.Seq.get(g.b*i+j).getValue()=='_')
 					f=0;
 		}
+		if(pl1==1){
+			System.out.println("--------"+g.p1.getName()+"  Wins "+"--------");
+			g.results.add(g.p1.getName());
+			return 1;
+		}
+		if(pl2==1){
+			System.out.println("--------"+g.p2.getName()+"  Wins "+"--------");
+			g.results.add(g.p2.getName());
+			return 1;
+		}
 		if(f==1){
 			System.out.println("------------Game DRAW !!------------");
+			g.results.add("Draw!!");
 			return 1;
 		}
 		return 0;
@@ -109,7 +127,7 @@ public class Game extends boardfeature {
 	}
 	public void printState(Game g){
 		int c=0;
-		for(TicTacToe t : Seq){
+		for(TicTacToe t : g.Seq){
 			if(c%g.b==0&&c!=0)
 				System.out.println();
 			System.out.print(t.getValue());
@@ -117,6 +135,15 @@ public class Game extends boardfeature {
 			c++;
 		}
 		System.out.println();
+	}
+	public void printleaderboard(Game g){
+		int c=1;
+		for(String t: g.results){
+			System.out.print(c);
+			System.out.println(" "+t);c++;
+		}
+		if(c==1)
+			System.out.println("leaderboard empty !!");
 	}
 	public static void play1(Game g,Scanner sc){
 		int flag=0,r,c;
@@ -204,16 +231,19 @@ public class Game extends boardfeature {
 	public static void main(String[] args){
 		Scanner scan = new Scanner(System.in);
 		int x;
+		Game g=new Game();
 		while(true){
 			System.out.println(" New Game begins :");
 			System.out.println(" Enter 1. to play human vs human TicTacToe");
 			System.out.println(" Enter 2. to play human vs bot TicTacToe");
 			System.out.println(" Enter 3. to quit this game ");
+			System.out.println(" Enter 4. to see leaderboard :");
 			x=scan.nextInt();
 			if(x==1||x==2){
-				Game g=new Game();
 				g.player1=new TicTacToe();
 				g.player2=new TicTacToe();
+				g.p1=new player();
+				g.p2=new player();
 				g.player1.setValue('X');
 				g.player2.setValue('O');
 				g.def=new TicTacToe();
@@ -222,13 +252,24 @@ public class Game extends boardfeature {
 				for(int i=0;i<g.b*g.b;i++){
 					g.Seq.add(g.def);
 				}
-				if(x==1)
+				String s;
+				System.out.println(" Name of player1");
+				s=scan.next();
+				g.p1.setName(s);
+				if(x==1){	
+				System.out.println(" Name of player2");
+				s=scan.next();
+				g.p2.setName(s);
 				Game.play1(g,scan);
-				else 
-				Game.play2(g,scan);
+				}
+				else {
+					g.p2.setName("Machine");
+					Game.play2(g,scan);}
 			}else if(x==3){
 				System.out.println(" Quiting the game, Bye Bye !!");
 				break;
+			}else if(x==4){
+				g.printleaderboard(g);
 			}else{
 				System.out.println(" You have entered wrong Number please type it again!!");
 			}	
