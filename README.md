@@ -40,3 +40,4 @@ Rules to play this game :
       
     
  coordinates should be between 0 to 2 as the matrix is of 3*3
+ # This Game consist of hexagonal feature to play this game press 5 after run.
