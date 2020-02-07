@@ -30,7 +30,181 @@ abstract class boardfeature{
 	abstract void printleaderboard(Game g);
 	//abstract void saveState(Game g);
 }
-
+class Hexagonal{
+	public int[][] array;
+	public int d;
+	public int size;
+	public Hexagonal(int n){
+		d=n;
+		size=2*n-1;
+		array=new int[size][size];
+	}
+	public static void print(Hexagonal h){
+		int f=0;
+		for(int i=0;i<h.d;i++){
+			for(int j=0;j<h.size;j++){
+				if(h.array[i][j]==999)
+					System.out.print(" ");
+				else if(h.array[i][j]==0)
+				System.out.print("_ ");
+				else if(h.array[i][j]==1)
+				System.out.print("X ");
+				else if(h.array[i][j]==-1)
+				System.out.print("O ");
+			}
+			System.out.println();
+		}
+		int k=1;
+		for(int i=h.d;i<h.size;i++){
+			int k1=k;
+			while(k1!=0){
+				System.out.print(" ");
+				k1--;
+			}k++;
+			for(int j=0;j<h.size;j++){
+				if(h.array[i][j]==999)
+					System.out.print(" ");
+				else if(h.array[i][j]==0)
+				System.out.print("_ ");
+				else if(h.array[i][j]==1)
+				System.out.print("X ");
+				else if(h.array[i][j]==-1)
+				System.out.print("O ");
+			}
+			System.out.println();
+		}
+	}
+	public static int checkhex(Hexagonal h){
+		int flag=1;
+		for(int i=0;i<h.size;i++){
+			for(int j=0;j<h.size;j++){
+				int s=0;
+				int j1=j;
+				for(int k=0;k<h.d&&j1<h.size;k++){
+					if(h.array[i][j1]==0)
+						flag=0;
+					s+=h.array[i][j1];j1++;
+				}
+				if(s==h.d){
+					System.out.println(" Player1 won");
+					return 1;
+				}else if(s==h.d*(-1)){
+					System.out.println(" Player2 won");
+					return 1;
+				}
+			}
+		}
+		for(int i=0;i<h.size;i++){
+			for(int j=0;j<h.size;j++){
+				int s=0;
+				int j1=i;
+				for(int k=0;k<h.d&&j1<h.size;k++){
+					s+=h.array[j1][j];j1++;
+				}
+				if(s==h.d){
+					System.out.println(" Player1 won");
+					return 1;
+				}else if(s==h.d*(-1)){
+					System.out.println(" Player2 won");
+					return 1;
+				}
+			}
+		}
+		for(int i=0;i<h.size;i++){
+			for(int j=0;j<h.size;j++){
+				int s=0;
+				int i1=i,j1=j;
+				for(int k=0;k<h.d&&i1<h.size&&j1>-1;k++){
+					s+=h.array[i1][j1];j1--;i1++;
+				}
+				if(s==h.d){
+					System.out.println(" Player1 won");
+					return 1;
+				}else if(s==h.d*(-1)){
+					System.out.println(" Player2 won");
+					return 1;
+				}
+			}
+		}
+		if(flag==1){
+			System.out.println("Draw!!");
+		}
+		return flag;
+	}
+	int available(Hexagonal h,int r,int c){
+		if(r<0||c<0||r>=size||c>=size)
+			return 0;
+		if(h.array[r][c]==0)
+			return 1;
+		else
+			return 0;
+	}
+	public void play(Hexagonal h,Scanner sc){
+		int flag=0,r,c;
+		while(true){
+			if(flag==0){
+				System.out.println("Player1 turn");
+				r=sc.nextInt();
+				c=sc.nextInt();
+				if(available(h,r,c)==1){
+					h.array[r][c]=1;
+					flag=1;
+				}
+				else{
+					System.out.println("Wrong cordinates!!  Enter Again") ;
+					continue;
+				}
+			}else{
+				System.out.println("Player2 turn");
+				r=sc.nextInt();
+				c=sc.nextInt();
+				if(available(h,r,c)==1){
+					h.array[r][c]=-1;
+					flag=0;
+				}
+				else{
+					System.out.println("Wrong cordinates!!  Enter Again") ;
+					continue;
+				}
+			}
+			if(Hexagonal.checkhex(h)==1)
+				break;
+			else
+				Hexagonal.print(h);
+		}
+		Hexagonal.print(h);
+	}
+	public static void hexamain(Scanner sc){
+		System.out.println(" Enter the maximum length for wining criteria ");
+		int n=sc.nextInt();
+		Hexagonal h=new Hexagonal(n);
+		int c=n-1;
+		for(int i=0;i<n;i++){
+			int k=c;
+			for(int j=0;j<2*n-1;j++){
+				if(k>0)
+					h.array[i][j]=999;
+				else
+					h.array[i][j]=0;
+				k--;
+			}
+			c--;
+		}
+		c=1;
+		for(int i=n;i<2*n-1;i++){
+			int k=c;
+			for(int j=2*(n-1);j>0;j--){
+				if(k>0)
+					h.array[i][j]=999;
+				else
+					h.array[i][j]=0;
+				k--;
+			}
+			c++;
+		}
+		h.play(h,sc);
+	}
+}      
 public class Game extends boardfeature {
 	TicTacToe player1,player2,def;
 	player p1,p2;
@@ -319,6 +493,7 @@ public class Game extends boardfeature {
 			System.out.println(" Enter 2. to play human vs bot TicTacToe");
 			System.out.println(" Enter 3. to quit this game ");
 			System.out.println(" Enter 4. to see leaderboard :");
+			System.out.println(" Enter 5. to play hexagonal TicTacToe");
 			x=scan.nextInt();
 			if(x==1||x==2){
 				g.player1=new TicTacToe();
@@ -329,7 +504,7 @@ public class Game extends boardfeature {
 				g.player2.setValue('O');
 				g.def=new TicTacToe();
 				int enhanc=0;
-				System.out.println("Wanna play enhance game enter 1 in power of 3 if not then enter 0");
+				System.out.println("Wanna play enhance game enter 1 if not then enter 0");
 				enhanc=scan.nextInt();
 				System.out.println("Enter the dimension of board in integer N");
 				g.b=scan.nextInt();
@@ -354,7 +529,10 @@ public class Game extends boardfeature {
 				break;
 			}else if(x==4){
 				g.printleaderboard(g);
-			}else{
+			}else if(x==5){
+				Hexagonal.hexamain(scan);
+			}
+			else{
 				System.out.println(" You have entered wrong Number please type it again!!");
 			}	
 		}
