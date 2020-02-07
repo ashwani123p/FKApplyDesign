@@ -24,6 +24,7 @@ feature branch contains code till human vs human TicTacToe
 
 feature2 branch contains full code working !!
 
+if you want to play enhance game enter 1 then program ask from you, if you wanna play or not!!
 on terminal  type 
 first this command =>    javac Game.java -d Classfiles
 second this command =>  java -cp ClassFiles/ learnJava.Game
@@ -36,7 +37,7 @@ Rules to play this game :
 			
 			Enter 3. to quit this game 
 			
-      			Enter 4. to see leaderboard
+      		Enter 4. to see leaderboard
 			
 			Enter 5. to play hexagonal TicTacToe
     
