@@ -24,8 +24,6 @@ feature branch contains code till human vs human TicTacToe
 
 feature2 branch contains full code working !!
 
-devBranch also contains full code working with all the requirements
-
 on terminal  type 
 first this command =>    javac Game.java -d Classfiles
 second this command =>  java -cp ClassFiles/ learnJava.Game
@@ -37,7 +35,10 @@ Rules to play this game :
 			Enter 2. to play human vs bot TicTacToe
 			
 			Enter 3. to quit this game 
-      
+			
+      			Enter 4. to see leaderboard
+			
+			Enter 5. to play hexagonal TicTacToe
     
  coordinates should be between 0 to 2 as the matrix is of 3*3
  # This Game consist of hexagonal feature to play this game press 5 after run.
